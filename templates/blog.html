@@ -1,0 +1,7 @@
+{% include 'header.html' %}
+
+<div class='blog'>
+	<p class='story'> {{ post['blog']|safe }} </p>
+	{% include 'share.html' %}
+</div>
+{% include 'footer.html' %}

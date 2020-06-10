@@ -1,0 +1,24 @@
+{% include 'header.html' %}
+
+<div class="wrapper" style="width: 700px; margin: auto">
+	<h1>Publish Blog</h1>
+	<form method="post">
+		{{ form.csrf_token }}
+		{{ form.title.label }}
+		{{ form.title }}<br><br>
+		{{ form.description.label }}
+		{{ form.description }} <br><br>
+		{{ form.target.label }}
+		{{ form.target }}<br><br>
+		{{ form.tags.label }}
+		{{ form.tags }} <br><br>
+		{{ form.body.label }}<br><br>
+		{{ form.body }} <br>
+		{{ form.txt }}
+		{{ form.submit }}
+	</form>
+</div>
+{{ ckeditor.load() }}
+{{ ckeditor.config(name='body') }}
+
+{% include 'footer.html' %}
