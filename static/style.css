@@ -511,7 +511,11 @@ nav.main {
   nav.main {
     padding: 0 15px; }
     nav.main a.brand {
-      margin-right: 5px !important; } }
+      margin-right: 5px !important; } 
+    nav.main ul.main-nav > li > a {
+        font-size: 16px !important; 
+      }
+    }
 
 .panel {
   position: relative;
