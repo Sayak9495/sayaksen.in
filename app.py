@@ -78,6 +78,12 @@ def blog(postId):
 	result = blogListCollection.update_one({'_id': postId}, {'$inc': {'views': 1}})
 	return render_template('blog.html', post=post, url=urllib.parse.quote(request.url, safe=''))
 
+# BlogView
+@app.route("/resume")
+def resume():
+	save_ip('resume')
+	return app.send_static_file('resume/resume.pdf')
+
 
 # Publish Code
 class PostForm(FlaskForm):
@@ -172,12 +178,14 @@ def login():
 	return render_template('login.html')
 
 # Analytics
-def save_ip():
+def save_ip(resume=None):
 	if (ipCollection.find_one({ '_id': request.remote_addr}) == None):
 		rslt = ipCollection.insert_one({ '_id': request.remote_addr, 'count':1 })
 	else:
 		ipCollection.update_one({ '_id': request.remote_addr}, {'$inc': {'count': 1}})
 	totalViewCollection.update_one({'_id': "sayaksen.in",}, {'$inc': {'count': 1}})
+	if (resume):
+		totalViewCollection.update_one({'_id': "resume",}, {'$inc': {'count': 1}})
 # END
 
 if __name__ == "__main__":
