@@ -459,7 +459,6 @@ nav.main {
     color: #f4645f;
     font-size: 30px;
     float: left;
-    width: 125px;
     line-height: 90px; }
   nav.main ul.main-nav {
     display: inline-block;
@@ -472,7 +471,7 @@ nav.main {
       margin: 0 15px; }
       nav.main ul.main-nav > li > a {
         line-height: 90px;
-        font-size: 22px;
+        font-size: 18px;
         color: #666666; }
         nav.main ul.main-nav > li > a:hover {
           color: #f4645f; }
@@ -511,10 +510,13 @@ nav.main {
   nav.main {
     padding: 0 15px; }
     nav.main a.brand {
-      margin-right: 5px !important; } 
+      margin-right: 5px !important; 
+      font-size: 20px !important;} 
     nav.main ul.main-nav > li > a {
         font-size: 16px !important; 
       }
+      nav.main ul.main-nav > li {
+      margin: 0 7px !important; }
     }
 
 .panel {
