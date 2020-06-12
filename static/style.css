@@ -778,6 +778,11 @@ section{
     background: #777575 url("images/lamp_mob.png") center repeat-x;
     background-size: cover;
   }
+
+  .card .heading{
+    font-size: 22px;
+    font-weight: 400;
+  }
 }
 
 .container .card{
