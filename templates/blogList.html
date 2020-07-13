@@ -12,7 +12,6 @@
 			<div class='card'>
 				<p class='date' style='float: right'> {{ post["created"] }}</p>
 				<a href='{{ "/blog/"+post["_id"] }}'><p class='heading'>{{ post['title'] }}</p></a>
-				<p class='date' style='float: right'><img src="https://img.icons8.com/material-outlined/16/000000/visible.png"/ height="16px" width="16px"> {{ post['views'] }}</p>
 				<p class='description'>{{ post['description'] }}</p>
 				{% for tag in post["tags"] %}
 					<p class='tags'><a href='{{ "?tags="+tag }}'>{{ tag }}</a></p>

@@ -89,7 +89,7 @@ def resume():
 class PostForm(FlaskForm):
 	title = StringField('Title')
 	description = StringField('Description')
-	target = SelectField(choices=[('blog','blog'), ('work','work')])
+	target = SelectField(choices=[('blog','blog'), ('work','work'), ('none','none')])
 	tags = StringField('Tags')
 	body = CKEditorField('Body')
 	txt = StringField()

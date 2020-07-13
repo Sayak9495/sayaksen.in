@@ -530,7 +530,7 @@ nav.main {
   .panel.dark {
     background-color: #f0f2f1; }
   .panel.color {
-    background: #777575 url("images/lamp.png") center no-repeat;
+    background: #777575 url("images/lamp.jpg") center no-repeat;
     background-size: cover;
   }
   .panel.statement {
@@ -811,7 +811,6 @@ section{
 }
 
 .card .description{
-  max-width: 500px;
   font-size: 16px;
   color: #666666;
 }
