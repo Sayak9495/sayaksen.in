@@ -6,6 +6,7 @@ import time
 import datetime
 import urllib.parse
 import io
+import sched, threading
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField
@@ -29,6 +30,10 @@ blogsCollection = db["blogs"]
 imgCollection = db["images"]
 ipCollection = db["ip"]
 totalViewCollection = db["totalView"]
+weeklyStatsCollection = db["weeklyStats"]
+
+# This scheduler is for updating weekly stats 
+schedule = sched.scheduler(time.time, time.sleep)
 
 # BEFORE
 @app.before_request
@@ -59,6 +64,15 @@ def blogSpace():
 def workSpace():
 	save_ip()
 	return render_template('blogList.html', posts=blogList('work'), space='work')
+
+# noneSpace
+@app.route("/noneSpace")
+def noneSpace():
+	save_ip()
+	if not g.email:
+		return redirect('/')
+	return render_template('blogList.html', posts=blogList('none'), space='work')
+
 
 def blogList(target):
 	if (request.args.get('tags')):
@@ -186,7 +200,33 @@ def save_ip(resume=None):
 	totalViewCollection.update_one({'_id': "sayaksen.in",}, {'$inc': {'count': 1}})
 	if (resume):
 		totalViewCollection.update_one({'_id': "resume",}, {'$inc': {'count': 1}})
+
+def schedule_weeklyStats():
+    schedule.enter(1, 1, weeklyStats, (schedule,))
+    schedule.run()
+
+def weeklyStats(sc):
+	# get current date-time
+	# if current date is saturday
+	# data - 
+	# 1. cumalitave data of blosList
+	# 2. and week-wise data of stats
+	# then get the earlier data from mongo
+	# subtract cumaltive data and wee-wise data
+	# send data to week-wise collection
+	#  
+	posts = list(blogListCollection.find())
+	count = 0
+	for post in posts:
+		count += post['views']
+	rslt = weeklyStatsCollection.insert_one({ 'date': datetime.datetime.utcnow(), 'count':count })
+	schedule.enter(10, 1, weeklyStats, (sc,))
+	# return str(count)
+
 # END
 
+
+
 if __name__ == "__main__":
+	# threading.Thread(target=schedule_weeklyStats).start()
 	app.run(host='0.0.0.0', debug=True)
