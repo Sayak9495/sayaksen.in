@@ -98,6 +98,9 @@ def resume():
 	save_ip('resume')
 	return app.send_static_file('resume/resume.pdf')
 
+@app.errorhandler(404)
+def not_found(e):
+	return render_template("404.html")
 
 # Publish Code
 class PostForm(FlaskForm):
