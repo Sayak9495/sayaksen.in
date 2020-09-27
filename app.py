@@ -88,7 +88,7 @@ def blog(postId):
 	save_ip()
 	post = blogsCollection.find_one({"_id": postId})
 	if (post == None):
-		return render_template('404.html')
+		return render_template('404.html'),404
 	result = blogListCollection.update_one({'_id': postId}, {'$inc': {'views': 1}})
 	return render_template('blog.html', post=post, url=urllib.parse.quote(request.url, safe=''))
 
@@ -100,7 +100,7 @@ def resume():
 
 @app.errorhandler(404)
 def not_found(e):
-	return render_template("404.html")
+	return render_template("404.html"),404
 
 # Publish Code
 class PostForm(FlaskForm):
