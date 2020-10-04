@@ -50,25 +50,25 @@ def favicon():
 # Landing Page
 @app.route("/")
 def index():
-	save_ip()
+	save_analytics()
 	return render_template('index.html')
 
 # BlogSpace
 @app.route("/blogSpace")
 def blogSpace():
-	save_ip()
+	save_analytics()
 	return render_template('blogList.html', posts=blogList('blog'), space='blog')
 
 # WorkSpace
 @app.route("/workSpace")
 def workSpace():
-	save_ip()
+	save_analytics()
 	return render_template('blogList.html', posts=blogList('work'), space='work')
 
 # noneSpace
 @app.route("/noneSpace")
 def noneSpace():
-	save_ip()
+	save_analytics()
 	if not g.email:
 		return redirect('/')
 	return render_template('blogList.html', posts=blogList('none'), space='work')
@@ -85,7 +85,7 @@ def blogList(target):
 # BlogView
 @app.route("/blog/<postId>")
 def blog(postId):
-	save_ip()
+	save_analytics()
 	post = blogsCollection.find_one({"_id": postId})
 	if (post == None):
 		return render_template('404.html'),404
@@ -95,7 +95,7 @@ def blog(postId):
 # BlogView
 @app.route("/resume")
 def resume():
-	save_ip('resume')
+	save_analytics('resume')
 	return app.send_static_file('resume/resume.pdf')
 
 @app.errorhandler(404)
@@ -195,11 +195,7 @@ def login():
 	return render_template('login.html')
 
 # Analytics
-def save_ip(resume=None):
-	if (ipCollection.find_one({ '_id': request.remote_addr}) == None):
-		rslt = ipCollection.insert_one({ '_id': request.remote_addr, 'count':1 })
-	else:
-		ipCollection.update_one({ '_id': request.remote_addr}, {'$inc': {'count': 1}})
+def save_analytics(resume=None):
 	totalViewCollection.update_one({'_id': "sayaksen.in",}, {'$inc': {'count': 1}})
 	if (resume):
 		totalViewCollection.update_one({'_id': "resume",}, {'$inc': {'count': 1}})
