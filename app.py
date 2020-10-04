@@ -102,7 +102,13 @@ def resume():
 def not_found(e):
 	return render_template("404.html"),404
 
-# Publish Code
+# Robots
+@app.route('/robots.txt')
+@app.route('/sitemap.xml')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
+
+# Publish Blog
 class PostForm(FlaskForm):
 	title = StringField('Title')
 	description = StringField('Description')
