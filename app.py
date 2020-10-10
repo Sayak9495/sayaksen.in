@@ -51,19 +51,19 @@ def favicon():
 @app.route("/")
 def index():
 	save_analytics()
-	return render_template('index.html')
+	return render_template('index.html', title='Sayak Sen- Blog of a noob techie')
 
 # BlogSpace
 @app.route("/blogSpace")
 def blogSpace():
 	save_analytics()
-	return render_template('blogList.html', posts=blogList('blog'), space='blog')
+	return render_template('blogList.html', posts=blogList('blog'), space='blog', title="Sayak's BlogSpace")
 
 # WorkSpace
 @app.route("/workSpace")
 def workSpace():
 	save_analytics()
-	return render_template('blogList.html', posts=blogList('work'), space='work')
+	return render_template('blogList.html', posts=blogList('work'), space='work', title="Sayak's WorkSpace")
 
 # noneSpace
 @app.route("/noneSpace")
@@ -71,7 +71,7 @@ def noneSpace():
 	save_analytics()
 	if not g.email:
 		return redirect('/')
-	return render_template('blogList.html', posts=blogList('none'), space='work')
+	return render_template('blogList.html', posts=blogList('none'), space='work', title="Sayak's NoneSpace")
 
 
 def blogList(target):
@@ -90,7 +90,8 @@ def blog(postId):
 	if (post == None):
 		return render_template('404.html'),404
 	result = blogListCollection.update_one({'_id': postId}, {'$inc': {'views': 1}})
-	return render_template('blog.html', post=post, url=urllib.parse.quote(request.url, safe=''))
+	title = post['title'] if 'title' in post else 'Sayak Sen Blogs'
+	return render_template('blog.html', post=post, url=urllib.parse.quote(request.url, safe=''), title=title)
 
 # BlogView
 @app.route("/resume")
@@ -100,7 +101,7 @@ def resume():
 
 @app.errorhandler(404)
 def not_found(e):
-	return render_template("404.html"),404
+	return render_template("404.html", title="Not Found"),404
 
 # Robots
 @app.route('/robots.txt')
@@ -134,7 +135,7 @@ def publish():
 		txt = form.txt.data
 		if (txt != os.environ["FLASK_SECRET_KEY"]):
 			print(txt, os.environ["FLASK_SECRET_KEY"])
-			return render_template('publish.html', form=form)
+			return render_template('publish.html', form=form, title='Publish Blogs')
 
 		_id = target+'_'+str(int(time.time()))
 		
@@ -150,12 +151,13 @@ def publish():
 		
 		result = blogsCollection.insert_one({
 			'_id': _id,
+			'title': title,
 			'blog': blog
 			})
 
 		return redirect('/blog/'+_id)
 		
-	return render_template('publish.html', form=form)
+	return render_template('publish.html', form=form, title='Publish Blogs')
 
 @app.route('/images/<filename>')
 def uploaded_files(filename):
@@ -196,9 +198,9 @@ def login():
 			session['email'] = email
 			return redirect('/')
 		else:
-			return render_template('login.html', message="Wrong Credentials!")
+			return render_template('login.html', message="Wrong Credentials!", title="Admin Page")
 
-	return render_template('login.html')
+	return render_template('login.html', title="Login Page")
 
 # Analytics
 def save_analytics(resume=None):

@@ -1,2 +1,3 @@
+Sitemap: https://www.sayaksen.in/sitemap.xml
 User-agent: *
 Disallow: /resume
