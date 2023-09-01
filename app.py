@@ -12,6 +12,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField
 from flask_ckeditor import CKEditor, CKEditorField, upload_fail, upload_success
 
+import certifi
+ca = certifi.where()
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
@@ -23,7 +26,9 @@ app.config['UPLOADED_PATH'] = os.path.join(basedir, 'images')
 ckeditor = CKEditor(app)
 app.secret_key = os.environ["FLASK_SECRET_KEY"]
 
-client = MongoClient(os.environ["MONGO_URI"])
+uri = os.environ["MONGO_URI"]
+client = MongoClient(uri, tlsCAFile=ca)
+
 db = client["sayaksenBlog"]
 blogListCollection = db["blogList"]
 blogsCollection = db["blogs"]
@@ -236,4 +241,4 @@ def weeklyStats(sc):
 
 if __name__ == "__main__":
 	# threading.Thread(target=schedule_weeklyStats).start()
-	app.run(host='0.0.0.0', debug=True)
+	app.run(host='0.0.0.0', port=6001, debug=True)
